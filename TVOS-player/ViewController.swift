@@ -39,17 +39,39 @@ class ViewController: UIViewController {
             playerItemProvider.streamType = .simulcast
         }
         
-        let player = BBCSMPPlayerBuilder().withPlayerItemProvider(playerItemProvider).build()
-        let playerViewController = player.buildUserInterface().buildViewController()
+        let decoderFactory = BBCSMPAVDecoderFactory()
+        
+        let player = BBCSMPPlayerBuilder()
+            .withPlayerItemProvider(playerItemProvider)
+            .withDecoderFactory(decoderFactory) // THIS IS IMPORTANT!
+            .build()
+        
+        let playerViewController = player.buildUserInterface()
+            .withFullscreenConfiguration(self.createUIConfiguration())
+            .buildViewController()
+        
+        decoderFactory.withVideoTrackSubscriber(playerViewController) // THIS IS IMPORTANT!
 
         let navigationController: UINavigationController = UINavigationController(rootViewController: playerViewController)
         self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    private func makePlayerBuilder() -> BBCSMPPlayerBuilder {
+        BBCSMPPlayerBuilder()
+            .withSuspendRule(BBCSMPSuspendRule.suspend(after: 500))
+            .withMonitoringBaseUrl("https://r.test.bbci.co.uk")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+    
+    private func createUIConfiguration() -> BBCSMPUIConfiguration {
+        let config = BBCSMPUIDefaultConfiguration()
+        config.volumeSliderHidden = false
+        return config
+      }
     
     class StubBBCSMPAVStatisticsConsumer: NSObject, BBCSMPAVStatisticsConsumer {
         func trackAVSessionStart(itemMetadata: BBCSMPItemMetadata!, playerSize: CGSize, mediaLength mediaLengthInSeconds: Int) {
