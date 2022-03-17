@@ -24,17 +24,20 @@ class ViewController: UIViewController {
     
     @IBAction func playVideoSimulcast(_ sender: Any) {
         let videoSimulcast = "https://vs-hls-push-uk-live.akamaized.net/x=3/i=urn:bbc:pips:service:bbc_one_hd/mobile_wifi_main_sd_abr_v2.m3u8"
-        play(videoSimulcast)
+        play(videoSimulcast, isLive: true)
     }
     
     @IBAction func playAudioSimulcast(_ sender: Any) {
         let audioSimulcast = "https://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/high/aks/bbc_6music.m3u8"
-        play(audioSimulcast)
+        play(audioSimulcast, isLive: true)
     }
     
-    func play(_ mediaUrl: String) {
+    func play(_ mediaUrl: String, isLive: Bool = false) {
         let statisticsConsumer = StubBBCSMPAVStatisticsConsumer()
         let playerItemProvider = BBCSMPStaticURLPlayerItemProvider(url: URL(string: mediaUrl)!, avStatisticsConsumer: statisticsConsumer)
+        if (isLive) {
+            playerItemProvider.streamType = .simulcast
+        }
         
         let player = BBCSMPPlayerBuilder().withPlayerItemProvider(playerItemProvider).build()
         let playerViewController = player.buildUserInterface().buildViewController()
