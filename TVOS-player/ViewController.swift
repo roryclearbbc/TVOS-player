@@ -13,7 +13,7 @@ import SMP
 class ViewController: UIViewController {
 
     @IBAction func playVideo(_ sender: Any) {
-        let vod =  "https://vod-hls-uk.live.cf.md.bbci.co.uk/usp/auth/vod/piff_abr_full_hd/efd8aa-m000crsj/vf_m000crsj_d8ecfb25-9648-4ca8-8b19-664f28c3344a.ism/vf_m000crsj_d8ecfb25-9648-4ca8-8b19-664f28c3344a-audio_eng=48000-video=281000.m3u8"
+        let vod =  "https://vod-hls-uk-live.akamaized.net/usp/auth/vod/piff_abr_full_hd/efd8aa-m000crsj/vf_m000crsj_d8ecfb25-9648-4ca8-8b19-664f28c3344a.ism/mobile_wifi_main_sd_abr_v2_hls_master.m3u8?__gda__=1647555926_60442332b5db38208736e4ac3669ebbf"
         play(vod)
     }
     
@@ -43,14 +43,16 @@ class ViewController: UIViewController {
         
         let player = BBCSMPPlayerBuilder()
             .withPlayerItemProvider(playerItemProvider)
-            .withDecoderFactory(decoderFactory) // THIS IS IMPORTANT!
+            // MARK: THIS IS IMPORTANT!
+            .withDecoderFactory(decoderFactory)
             .build()
         
         let playerViewController = player.buildUserInterface()
             .withFullscreenConfiguration(self.createUIConfiguration())
             .buildViewController()
         
-        decoderFactory.withVideoTrackSubscriber(playerViewController) // THIS IS IMPORTANT!
+        // MARK: THIS IS IMPORTANT!
+        decoderFactory.withVideoTrackSubscriber(playerViewController)
 
         let navigationController: UINavigationController = UINavigationController(rootViewController: playerViewController)
         self.present(navigationController, animated: true, completion: nil)
