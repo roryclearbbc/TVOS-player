@@ -1,0 +1,62 @@
+{
+  "name": "smp-ios",
+  "module_name": "SMP",
+  "version": "9999.9999.9999-dev",
+  "summary": "Media player for iOS and iPadOS.",
+  "description": "Media player for iOS and iPadOS that aims to provide a reusable component based on the iPlayer media player whilst complying to the SMP interactive and visual guidelines - works on iOS 11.3 and above.",
+  "homepage": "https://github.com/bbc/smp-ios",
+  "license": "None",
+  "authors": {
+    "Mobile Playback - Media Services": "mobileplayback@bbc.co.uk"
+  },
+  "source": {
+    "git": "git@github.com:bbc/smp-ios.git",
+    "tag": "smp-ios-9999.9999.9999-dev"
+  },
+  "requires_arc": true,
+  "platforms": {
+    "ios": "11.3",
+    "tvos": "11.3"
+  },
+  "swift_versions": "5.0",
+  "default_subspecs": "AVDecoder",
+  "header_dir": "smp-ios/SMP",
+  "source_files": "smp-ios/BBCSMP/**/*.{h,m,swift}",
+  "ios": {
+    "resources": [
+      "smp-ios/BBCSMP/UI/Adaptive Layout/BBCSMPAdaptivePlayerView.xib"
+    ]
+  },
+  "public_header_files": [
+    "smp-ios/BBCSMP/SMP.h",
+    "smp-ios/BBCSMP/Public/*.h",
+    "smp-ios/BBCSMP/API/**/*.h",
+    "smp-ios/BBCSMP/PrivateSwift/**/*.h",
+    "smp-ios/BBCSMP/AVFoundation\\ Decoder/Public/**/*.h",
+    "smp-ios/BBCSMP/Builder/**/*.h"
+  ],
+  "dependencies": {
+    "httpclient-ios": [
+      ">= 7.1.1"
+    ],
+    "mediaselector-client-ios": [
+      ">= 5.0.0"
+    ],
+    "config-service": [
+      ">= 1.0.0"
+    ]
+  },
+  "frameworks": [
+    "AVKit",
+    "QuartzCore",
+    "SystemConfiguration",
+    "MediaPlayer"
+  ],
+  "subspecs": [
+    {
+      "name": "AVDecoder",
+      "source_files": "smp-ios/AVDecoder/**/*{h,m,swift}"
+    }
+  ],
+  "swift_version": "5.0"
+}

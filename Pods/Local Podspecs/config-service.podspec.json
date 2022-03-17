@@ -1,0 +1,23 @@
+{
+  "name": "config-service",
+  "module_name": "ConfigService",
+  "version": "1.0.1",
+  "summary": "Fetches Configurations",
+  "description": "Fetches Configurations",
+  "homepage": "https://github.com/bbc/smp-ios",
+  "license": "None",
+  "authors": {
+    "Mobile Playback - Media Services": "mobileplayback@bbc.co.uk"
+  },
+  "source": {
+    "git": "git@github.com:bbc/smp-ios.git",
+    "tag": "config-service-1.0.1"
+  },
+  "platforms": {
+    "tvos": "11.3"
+  },
+  "requires_arc": true,
+  "swift_versions": "5.0",
+  "source_files": "config-service/config-service/**/*.{h,m,swift}",
+  "swift_version": "5.0"
+}
