@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="19529" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="19455" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="appleTV" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,22 +21,53 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3qI-Ya-8Vf">
-                                <rect key="frame" x="80" y="60" width="1760" height="960"/>
+                                <rect key="frame" x="80" y="60" width="240" height="86"/>
                                 <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Play Something"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Play VOD"/>
                                 <connections>
                                     <action selector="playVideo:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="ebE-4J-kk0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NyD-qP-0sj">
+                                <rect key="frame" x="1418" y="934" width="422" height="86"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Play AudioSimulcast"/>
+                                <connections>
+                                    <action selector="playAudioSimulcast:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="NMh-el-cJZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nJl-UP-Jw7">
+                                <rect key="frame" x="1419" y="60" width="421" height="86"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Play VideoSimulcast"/>
+                                <connections>
+                                    <action selector="playVideoSimulcast:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="cCj-Gl-EnP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ho6-HQ-uo4">
+                                <rect key="frame" x="80" y="934" width="239" height="86"/>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Play AOD"/>
+                                <connections>
+                                    <action selector="playAudio:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="ffw-Jw-bZR"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wu6-TO-1qx"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="wu6-TO-1qx" firstAttribute="trailing" secondItem="3qI-Ya-8Vf" secondAttribute="trailing" id="42r-ru-pKr"/>
-                            <constraint firstItem="wu6-TO-1qx" firstAttribute="bottom" secondItem="3qI-Ya-8Vf" secondAttribute="bottom" id="Pyb-vI-9er"/>
-                            <constraint firstItem="3qI-Ya-8Vf" firstAttribute="leading" secondItem="wu6-TO-1qx" secondAttribute="leading" id="Rt0-1e-JNk"/>
-                            <constraint firstItem="3qI-Ya-8Vf" firstAttribute="top" secondItem="wu6-TO-1qx" secondAttribute="top" id="Ssh-Tc-c7F"/>
+                            <constraint firstItem="wu6-TO-1qx" firstAttribute="bottom" secondItem="Ho6-HQ-uo4" secondAttribute="bottom" id="0kt-wr-40w"/>
+                            <constraint firstItem="wu6-TO-1qx" firstAttribute="bottom" secondItem="NyD-qP-0sj" secondAttribute="bottom" id="2ZL-Tk-bLD"/>
+                            <constraint firstItem="nJl-UP-Jw7" firstAttribute="top" secondItem="wu6-TO-1qx" secondAttribute="top" id="Etl-ZY-jxB"/>
+                            <constraint firstItem="wu6-TO-1qx" firstAttribute="trailing" secondItem="nJl-UP-Jw7" secondAttribute="trailing" id="Ghc-tR-Xab"/>
+                            <constraint firstItem="3qI-Ya-8Vf" firstAttribute="leading" secondItem="wu6-TO-1qx" secondAttribute="leading" id="MUo-lG-Frh"/>
+                            <constraint firstItem="Ho6-HQ-uo4" firstAttribute="leading" secondItem="wu6-TO-1qx" secondAttribute="leading" id="ORJ-UD-SK8"/>
+                            <constraint firstItem="wu6-TO-1qx" firstAttribute="trailing" secondItem="NyD-qP-0sj" secondAttribute="trailing" id="Pww-y9-vlI"/>
+                            <constraint firstItem="3qI-Ya-8Vf" firstAttribute="top" secondItem="wu6-TO-1qx" secondAttribute="top" id="oBh-1T-SYN"/>
                         </constraints>
                     </view>
                 </viewController>

@@ -14,8 +14,8 @@ PODS:
     - mediaselector-client-ios (>= 5.0.0)
 
 DEPENDENCIES:
-  - config-service (from `~/Documents/smp-ios`)
-  - smp-ios (from `~/Documents/smp-ios`)
+  - config-service (from `~/Documents/iOS/smp-ios`)
+  - smp-ios (from `~/Documents/iOS/smp-ios`)
 
 SPEC REPOS:
   "git@github.com:bbc/map-ios-podspecs.git":
@@ -24,9 +24,9 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   config-service:
-    :path: "~/Documents/smp-ios"
+    :path: "~/Documents/iOS/smp-ios"
   smp-ios:
-    :path: "~/Documents/smp-ios"
+    :path: "~/Documents/iOS/smp-ios"
 
 SPEC CHECKSUMS:
   config-service: b1a086e34fd3ea6edd25a4d234042afd41c24af0
@@ -34,6 +34,6 @@ SPEC CHECKSUMS:
   mediaselector-client-ios: 76521e0dcc441e14d002eb8699e0d477344c4982
   smp-ios: ad4c767c50a6484e0cdd244b249073f6b3d54d35
 
-PODFILE CHECKSUM: 89cefa812f1b4e7444477f4f8e3f5b7309192e0d
+PODFILE CHECKSUM: 23257e087e258cadb84a5231cef86c732ec19dd5
 
 COCOAPODS: 1.11.2
