@@ -11,6 +11,8 @@ import AVKit
 import SMP
 
 class ViewController: UIViewController {
+    
+    var observer: Any?
 
     @IBAction func playVideo(_ sender: Any) {
         let vpid = "m000crsj"
@@ -50,11 +52,42 @@ class ViewController: UIViewController {
             .withFullscreenConfiguration(self.createUIConfiguration())
             .buildViewController()
         
+        let thisController = AVPlayerViewController()
+        
+        class Observer: NSObject, PlaybackStateObserver {
+            
+            let thisPlayer: BBCSMP
+            let thisController: AVPlayerViewController
+            let viewController: ViewController
+            
+            init(_ player: BBCSMP, _ playerController: AVPlayerViewController, _ viewController: ViewController) {
+                thisPlayer = player
+                thisController = playerController
+                self.viewController = viewController
+            }
+            
+            func state(_ state: PlaybackState) {
+                if state is PlaybackStatePlaying {
+                    thisPlayer.setup?(forTvOSViewController: thisController)
+                }
+            }
+                
+        }
+        
+        observer = Observer(player, thisController, self)
+        
+        player.add(stateObserver: observer as! Observer)
+    
+        
         // MARK: THIS IS IMPORTANT!
-        decoderFactory.withVideoTrackSubscriber(playerViewController)
+//        decoderFactory.withVideoTrackSubscriber(playerViewController)
+        
+        self.present(thisController, animated: true) {
+            player.play()
+        }
 
-        let navigationController: UINavigationController = UINavigationController(rootViewController: playerViewController)
-        self.present(navigationController, animated: true, completion: nil)
+//        let navigationController: UINavigationController = UINavigationController(rootViewController: playerViewController)
+//        self.present(navigationController, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
