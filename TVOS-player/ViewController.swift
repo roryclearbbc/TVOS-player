@@ -13,12 +13,14 @@ import SMP
 class ViewController: UIViewController {
 
     @IBAction func playVideo(_ sender: Any) {
-        let vod =  "https://vod-hls-uk-live.akamaized.net/usp/auth/vod/piff_abr_full_hd/efd8aa-m000crsj/vf_m000crsj_d8ecfb25-9648-4ca8-8b19-664f28c3344a.ism/mobile_wifi_main_sd_abr_v2_hls_master.m3u8?__gda__=1647555926_60442332b5db38208736e4ac3669ebbf"
-        play(vod)
+        let vod =  "https://vod-hls-uk-live.akamaized.net/usp/auth/vod/piff_abr_full_hd/efd8aa-m000crsj/vf_m000crsj_d8ecfb25-9648-4ca8-8b19-664f28c3344a.ism/mobile_wifi_main_sd_abr_v2_hls_master.m3u8?__gda__=1647874667_781c7d692f0878f597bf248d0c5b8462"
+        let subtitles =
+            "https://vod-sub-uk-live.akamaized.net/iplayer/subtitles/ng/modav/bUnknown-7c4985de-20fb-451d-9069-0c46e28d6f2c_m000crsj_pips-pid-m000crsj_1638872506838.xml?__gda__=1647874667_82bdbfa6364f87a7ae2344410920aad5"
+        play(vod, subtitles)
     }
     
     @IBAction func playAudio(_ sender: Any) {
-        let aod =  "https://aod-hls-uk-live.akamaized.net/usp/auth/vod/piff_abr_full_audio/e7881a-m0013jmz/vf_m0013jmz_b165ea45-5c43-4a45-820b-deaf10d5abff.ism/mobile_wifi_main_sd_abr_v2_uk_hls_master.m3u8?__gda__=1647548921_06e57756b5cec30015a8e0bd2321987d"
+        let aod =  "https://aod-hls-uk-live.akamaized.net/usp/auth/vod/piff_abr_full_audio/77dc2a-m00153sq/vf_m00153sq_643b08fe-e4a8-42ed-8cff-d0d761c3a592.ism/mobile_wifi_main_sd_abr_v2_uk_hls_master.m3u8?__gda__=1647877256_3fea8e68a81fd1b62c0f72cf610aa32e"
         play(aod)
     }
     
@@ -32,9 +34,11 @@ class ViewController: UIViewController {
         play(audioSimulcast, isLive: true)
     }
     
-    func play(_ mediaUrl: String, isLive: Bool = false) {
+    func play(_ mediaUrl: String, _ subtitlesUrl: String = "", isLive: Bool = false) {
         let statisticsConsumer = StubBBCSMPAVStatisticsConsumer()
-        let playerItemProvider = BBCSMPStaticURLPlayerItemProvider(url: URL(string: mediaUrl)!, avStatisticsConsumer: statisticsConsumer)
+        let playerItemProvider = !subtitlesUrl.isEmpty ?
+            BBCSMPStaticURLPlayerItemProvider(url: URL(string: mediaUrl)!, subtitleUrl: URL(string: subtitlesUrl)!, avStatisticsConsumer: statisticsConsumer) :
+            BBCSMPStaticURLPlayerItemProvider(url: URL(string: mediaUrl)!, avStatisticsConsumer: statisticsConsumer)
         if (isLive) {
             playerItemProvider.streamType = .simulcast
         }
@@ -43,6 +47,7 @@ class ViewController: UIViewController {
         
         let player = BBCSMPPlayerBuilder()
             .withPlayerItemProvider(playerItemProvider)
+            .withSubtitlesDefaultedOn()
             // MARK: THIS IS IMPORTANT!
             .withDecoderFactory(decoderFactory)
             .build()
@@ -56,12 +61,6 @@ class ViewController: UIViewController {
 
         let navigationController: UINavigationController = UINavigationController(rootViewController: playerViewController)
         self.present(navigationController, animated: true, completion: nil)
-    }
-    
-    private func makePlayerBuilder() -> BBCSMPPlayerBuilder {
-        BBCSMPPlayerBuilder()
-            .withSuspendRule(BBCSMPSuspendRule.suspend(after: 500))
-            .withMonitoringBaseUrl("https://r.test.bbci.co.uk")
     }
     
     override func viewDidLoad() {
