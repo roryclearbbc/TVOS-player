@@ -9,13 +9,17 @@ import UIKit
 import AVFoundation
 import AVKit
 import SMP
+import MediaPlayer
 
 class ViewController: UIViewController {
-
+    
     @IBAction func playVideo(_ sender: Any) {
         let vpid = "m000crsj"
         play(vpid, streamType: .VOD, avType: .video)
     }
+    
+    var player: BBCSMP? = nil
+    var stateObserver = StateObserver()
     
     @IBAction func playAudio(_ sender: Any) {
         let vpid = "m00153sq"
@@ -46,15 +50,21 @@ class ViewController: UIViewController {
             .withDecoderFactory(decoderFactory)
             .build()
         
+        self.player = player
+        player.add(stateObserver: stateObserver)
+        
         let playerViewController = player.buildUserInterface()
             .withFullscreenConfiguration(self.createUIConfiguration())
             .buildViewController()
         
         // MARK: THIS IS IMPORTANT!
         decoderFactory.withVideoTrackSubscriber(playerViewController)
-
+        
         let navigationController: UINavigationController = UINavigationController(rootViewController: playerViewController)
-        self.present(navigationController, animated: true, completion: nil)
+        self.present(navigationController, animated: true, completion: { [weak self] in
+            self?.registerForRemoteCommands(view: playerViewController.view)
+            
+        })
     }
     
     override func viewDidLoad() {
@@ -66,7 +76,7 @@ class ViewController: UIViewController {
         let config = BBCSMPUIDefaultConfiguration()
         config.volumeSliderHidden = false
         return config
-      }
+    }
     
     class StubBBCSMPAVStatisticsConsumer: NSObject, BBCSMPAVStatisticsConsumer {
         func trackAVSessionStart(itemMetadata: BBCSMPItemMetadata!, playerSize: CGSize, mediaLength mediaLengthInSeconds: Int) {
@@ -121,5 +131,55 @@ class ViewController: UIViewController {
             
         }
     }
-
+    
+    private func registerForRemoteCommands(view: UIView) {
+        // Gesture to handle play pause state
+        let playPauseGesture = UITapGestureRecognizer(target: self, action: #selector(togglePlaybackState))
+        playPauseGesture.allowedPressTypes = [NSNumber(value: UIPress.PressType.playPause.rawValue), NSNumber(value: UIPress.PressType.select.rawValue)]
+        view.addGestureRecognizer(playPauseGesture)
+        
+        // MPRemoteCommands to handle play pause state
+        let remoteCommandCenter = MPRemoteCommandCenter.shared()
+        remoteCommandCenter.playCommand.addTarget(self, action: #selector(playHandler))
+        remoteCommandCenter.pauseCommand.addTarget(self, action: #selector(pauseHandler))
+    }
+    
+    @objc private func togglePlaybackState() -> MPRemoteCommandHandlerStatus {
+        print("togglePlaybackState")
+        
+        guard let state = stateObserver.state else {
+            return .commandFailed
+        }
+        
+        if state is PlaybackStatePlaying {
+            return pauseHandler()
+        } else if state is PlaybackStatePaused {
+            return playHandler()
+        } else {
+            return .commandFailed
+        }
+    }
+    
+    @objc private func playHandler() -> MPRemoteCommandHandlerStatus {
+        print("play")
+        player?.play()
+        
+        return .success
+    }
+    
+    @objc private func pauseHandler() -> MPRemoteCommandHandlerStatus {
+        print("pause")
+        player?.pause()
+        
+        return .success
+    }
+    
+    class StateObserver: NSObject, PlaybackStateObserver {
+        private(set) var state: PlaybackState? = nil
+        
+        func state(_ state: PlaybackState) {
+            self.state = state
+        }
+    }
+    
 }
